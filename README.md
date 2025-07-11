@@ -1,4 +1,4 @@
-# 🔗 URL Shortener API (Backend Developer Intern Task)
+# 🔗 URL Shortener API
 
 A powerful and production-ready Node.js + MongoDB-based URL shortening service that allows users to:
 
@@ -12,31 +12,37 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 
 ## 🚀 Live Demo
 
-👉 [Live URL Shortener Demo](https://your-live-demo-link.com) *(Replace with deployed link or leave this section commented if not yet hosted)*
+[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge\&logo=render)](https://your-live-demo-link.com)
 
 ---
 
-## ✅ Features Implemented
+## 📦 Tech Stack
 
-### Core Features
+* **Language**: JavaScript (Node.js)
+* **Framework**: Express.js
+* **Database**: MongoDB (via Mongoose)
+* **Utilities**:
 
-* 🔗 Shorten long URLs via `POST /url`
-* 🚀 Redirect using short URL via `GET /url/:shortUrl`
-* 🧠 Stores original URL, short ID, timestamps
-* 🛡 Validates input and handles invalid or missing URLs
-* ⚠️ Redirects with proper status codes (`302`, `404`, `410`)
-
-### Bonus Features ✅
-
-* ⏳ Expiration logic using optional `expiresAt` field
-* 📊 Visit analytics: track clicks & timestamps
-* 🧃 Rate limiting with `express-rate-limit` (100 requests / 15 min per IP)
+  * `nanoid` for generating short codes
+  * `express-rate-limit` for rate limiting
 
 ---
 
-## 📁 Folder Structure
+## 🚀 Features
+
+* 🔗 Shortens long URLs
+* 🔁 Redirects short code to the original URL
+* ⏳ Supports expiration of URLs via `expiresAt`
+* 📊 Tracks number of visits with timestamp
+* 🧃 Simple rate limiting (100 req / 15 mins per IP)
+* ⚠️ Handles 404, 410, and validation errors
+
+---
+
+## 📁 Project Structure
 
 ```
+.
 ├── index.js               # App entry point
 ├── connect.js             # MongoDB connection setup
 ├── model/
@@ -48,55 +54,21 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 ├── .env.example           # Sample environment config
 ├── .gitignore             # Git ignore rules
 ├── package.json           # Project config & dependencies
+└── README.md
 ```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone and Install
-
-```bash
-git clone https://github.com/your-username/url-shortener.git
-cd url-shortener
-npm install
-```
-
-### 2. Configure Environment
-
-Create a `.env` file:
-
-```env
-MONGO_URI=mongodb://localhost:27017/url-shortener
-PORT=8001
-```
-
-### 3. Run MongoDB
-
-Ensure MongoDB is running locally, or use MongoDB Atlas.
-
-### 4. Start the Server
-
-```bash
-npm start
-```
-
-Server will be running at: [http://localhost:8001](http://localhost:8001)
 
 ---
 
 ## 📬 API Endpoints
 
-### ➕ `POST /url`
-
-Create a short URL.
+### ➕ POST `/url`
 
 **Request Body:**
 
 ```json
 {
   "url": "https://example.com",
-  "expiresAt": "2024-12-31T23:59:59.000Z" // optional
+  "expiresAt": "2024-12-31T23:59:59.000Z"
 }
 ```
 
@@ -110,11 +82,9 @@ Create a short URL.
 
 ---
 
-### 🔁 `GET /url/:shortUrl`
+### 🔁 GET `/url/:shortUrl`
 
-Redirect to the original URL.
-
-**Returns:**
+Redirects to original URL. Returns:
 
 * `302` if valid
 * `410` if expired
@@ -122,9 +92,7 @@ Redirect to the original URL.
 
 ---
 
-### 📊 `GET /url/analytics/:shortUrl`
-
-Get usage statistics for a short URL.
+### 📊 GET `/url/analytics/:shortUrl`
 
 **Response:**
 
@@ -142,50 +110,100 @@ Get usage statistics for a short URL.
 
 ---
 
-## 🔐 Rate Limiting
+## ⚙️ Setup & Run
 
-Protects your API with:
+### 1. Clone the Repository
 
-* ⏱ 100 requests per 15 minutes per IP
-* 🚫 Blocks abuse and keeps the app performant
+```bash
+git clone https://github.com/Orianbit/url-shortener.git
+cd url-shortener
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file:
+
+```
+MONGO_URI=mongodb://localhost:27017/url-shortener
+PORT=8001
+```
+
+### 4. Start the Server
+
+```bash
+npm start
+```
+
+Server will be running at: [http://localhost:8001](http://localhost:8001)
 
 ---
 
-## 🛡 Error Handling
+## 🧪 Testing with Postman
 
-| Status Code | Meaning               |
-| ----------- | --------------------- |
-| `400`       | Invalid request body  |
-| `404`       | Short URL not found   |
-| `410`       | URL has expired       |
-| `500`       | Internal server error |
+### ➕ POST `/url`
+
+```http
+POST http://localhost:8001/url
+Content-Type: application/json
+
+{
+  "url": "https://example.com"
+}
+```
+
+### 🔁 GET `/url/:shortUrl`
+
+```http
+GET http://localhost:8001/url/abc123
+```
+
+### 📊 GET `/url/analytics/:shortUrl`
+
+```http
+GET http://localhost:8001/url/analytics/abc123
+```
 
 ---
 
-## 💡 Tech Stack
+## 📊 Bonus Features
 
-* ⚙️ Node.js
-* 🚀 Express.js
-* 🗃 MongoDB + Mongoose
-* 🔐 nanoid (unique ID generation)
-* 🧃 express-rate-limit
+* ✅ **Rate Limiting**: 100 requests per 15 minutes
+* ✅ **Expiration**: Rejects expired links with `410`
+* ✅ **Click Tracking**: `visitHistory` logs every hit
 
 ---
 
-## 🤝 Acknowledgements
+## 📌 Sample `.env`
 
-* MongoDB documentation
-* Express.js official docs
+```env
+MONGO_URI=mongodb://localhost:27017/url-shortener
+PORT=8001
+```
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+## 🙌 Acknowledgements
+
+* [MongoDB](https://www.mongodb.com/)
+* [Express.js](https://expressjs.com/)
+* [nanoid](https://github.com/ai/nanoid)
+* [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
 
 ---
 
 ## ✍️ Author
 
-* [Astitva (Orianbit)](https://github.com/Orianbit)
-
----
-
-## 📂 License
-
-[MIT](LICENSE)
-
+**Astitva (Orianbit)**
+🔗 [GitHub Profile](https://github.com/Orianbit)
