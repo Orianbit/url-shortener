@@ -1,6 +1,6 @@
 # 🔗 URL Shortener API
 
-A powerful and production-ready Node.js + MongoDB-based URL shortening service that allows users to:
+A powerful, production-ready Node.js + MongoDB-based URL shortening service that allows users to:
 
 * 🔗 Create branded short URLs
 * ⏳ Set expiration dates
@@ -12,8 +12,7 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 
 ## 🚀 Live Demo
 
-[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge&logo=render)](https://url-shortener-nm9j.onrender.com)
-
+[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge\&logo=render)](https://url-shortener-nm9j.onrender.com)
 
 ---
 
@@ -21,22 +20,24 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 
 * **Language**: JavaScript (Node.js)
 * **Framework**: Express.js
-* **Database**: MongoDB (via Mongoose)
+* **Database**: MongoDB Atlas (via Mongoose)
 * **Utilities**:
 
   * `nanoid` for generating short codes
   * `express-rate-limit` for rate limiting
+  * `dotenv` for environment configuration
 
 ---
 
-## 🚀 Features
+## ✅ Features
 
 * 🔗 Shortens long URLs
 * 🔁 Redirects short code to the original URL
 * ⏳ Supports expiration of URLs via `expiresAt`
-* 📊 Tracks number of visits with timestamp
+* 📊 Tracks number of visits with timestamps
 * 🧃 Simple rate limiting (100 req / 15 mins per IP)
 * ⚠️ Handles 404, 410, and validation errors
+* 🧠 CreatedAt + isExpired response for analytics
 
 ---
 
@@ -69,7 +70,7 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 ```json
 {
   "url": "https://example.com",
-  "expiresAt": "2024-12-31T23:59:59.000Z"
+  "expiresAt": "2025-12-31T23:59:59.000Z" // optional
 }
 ```
 
@@ -83,19 +84,25 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 
 ---
 
-### 🔁 GET `/url/:shortUrl`
+### 🔁 GET `/:shortUrl`
 
 Redirects to original URL. Returns:
 
-* `302` if valid
-* `410` if expired
-* `404` if not found
+* `302` – success
+* `410` – expired
+* `404` – not found
+
+Example:
+
+```
+https://url-shortener-nm9j.onrender.com/abc12345
+```
 
 ---
 
 ### 📊 GET `/url/analytics/:shortUrl`
 
-**Response:**
+**Returns:**
 
 ```json
 {
@@ -103,15 +110,15 @@ Redirects to original URL. Returns:
   "analytics": [
     { "timestamp": 1720700000000 }
   ],
-  "createdAt": "...",
-  "expiresAt": "...",
-  "isExpired": true
+  "createdAt": "2025-07-11T07:53:38.345Z",
+  "expiresAt": "2025-12-31T23:59:59.000Z",
+  "isExpired": false
 }
 ```
 
 ---
 
-## ⚙️ Setup & Run
+## ⚙️ Setup & Run Locally
 
 ### 1. Clone the Repository
 
@@ -130,10 +137,12 @@ npm install
 
 Create a `.env` file:
 
-```
-MONGO_URI=mongodb://localhost:27017/url-shortener
+```env
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/url-shortener?retryWrites=true&w=majority
 PORT=8001
 ```
+
+> 💡 Replace `<username>` and `<password>` with your MongoDB Atlas credentials.
 
 ### 4. Start the Server
 
@@ -141,16 +150,17 @@ PORT=8001
 npm start
 ```
 
-Server will be running at: [http://localhost:8001](http://localhost:8001)
+Local server will run at:
+[http://localhost:8001](http://localhost:8001)
 
 ---
 
 ## 🧪 Testing with Postman
 
-### ➕ POST `/url`
+### ➕ Create a short URL
 
 ```http
-POST http://localhost:8001/url
+POST https://url-shortener-nm9j.onrender.com/url
 Content-Type: application/json
 
 {
@@ -158,33 +168,35 @@ Content-Type: application/json
 }
 ```
 
-### 🔁 GET `/url/:shortUrl`
+### 🔁 Redirect
 
-```http
-GET http://localhost:8001/url/abc123
+Open in browser:
+
+```
+https://url-shortener-nm9j.onrender.com/abc12345
 ```
 
-### 📊 GET `/url/analytics/:shortUrl`
+### 📊 Analytics
 
 ```http
-GET http://localhost:8001/url/analytics/abc123
+GET https://url-shortener-nm9j.onrender.com/url/analytics/abc12345
 ```
 
 ---
 
-## 📊 Bonus Features
+## 🔐 Bonus Features
 
 * ✅ **Rate Limiting**: 100 requests per 15 minutes
-* ✅ **Expiration**: Rejects expired links with `410`
-* ✅ **Click Tracking**: `visitHistory` logs every hit
+* ✅ **Expiration**: Links auto-expire with 410 error
+* ✅ **Click Tracking**: `visitHistory` logs each visit with timestamp
 
 ---
 
 ## 📌 Sample `.env`
 
 ```env
-MONGO_URI=mongodb://localhost:27017/url-shortener
-PORT=8001
+MONGO_URI=mongodb+srv://<your-user>:<your-pass>@cluster0.mongodb.net/url-shortener?retryWrites=true&w=majority
+PORT=10000
 ```
 
 ---
@@ -200,7 +212,8 @@ MIT
 * [MongoDB](https://www.mongodb.com/)
 * [Express.js](https://expressjs.com/)
 * [nanoid](https://github.com/ai/nanoid)
-* [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
+* [Render](https://render.com)
+* [Postman](https://www.postman.com/)
 
 ---
 
