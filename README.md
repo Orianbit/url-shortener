@@ -12,7 +12,8 @@ A powerful and production-ready Node.js + MongoDB-based URL shortening service t
 
 ## 🚀 Live Demo
 
-[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge\&logo=render)][(https://url-shortener-nm9j.onrender.com)]
+[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge&logo=render)](https://url-shortener-nm9j.onrender.com)
+
 
 ---
 
