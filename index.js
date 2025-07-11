@@ -1,32 +1,31 @@
+require("dotenv").config();
+
 const express = require('express');
-const { connectDB } = require('./connect'); // Make sure it's connectDB
-const urlRoutes = require('./route/url');   // Check if folder is route or routes
-const URL = require('./model/url'); // Import the URL model
+const { connectDB } = require('./connect');
+const urlRoutes = require('./route/url');
+const URL = require('./model/url');
 
 const app = express();
 const port = process.env.PORT || 8001;
 
-// ✅ Add JSON parser middleware
 app.use(express.json());
 
-// ✅ Setup routes
 app.use('/url', urlRoutes);
 
-app.get('/:shortUrl', async (req,res) => {
-    const shortUrl=req.params.shortUrl;
-    const entry = await URL.findOneAndUpdate({
-        shortUrl
-    },{$push:{
-        visitHistory:{ timestamp: Date.now() },
-    },
-},
-);
-res.redirect(entry.originalUrl);
+app.get('/:shortUrl', async (req, res) => {
+  const shortUrl = req.params.shortUrl;
+  const entry = await URL.findOneAndUpdate(
+    { shortUrl },
+    { $push: { visitHistory: { timestamp: Date.now() } } }
+  );
+
+  if (!entry) return res.status(404).json({ error: "Short URL not found" });
+
+  res.redirect(entry.originalUrl);
 });
 
-
-// ✅ Connect to MongoDB and start server
-connectDB('mongodb://localhost:27017/url-shortener')
+// ✅ Use env var for connection string
+connectDB(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(port, () => {
@@ -36,3 +35,5 @@ connectDB('mongodb://localhost:27017/url-shortener')
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
+// This code sets up an Express server that connects to a MongoDB database and provides routes for URL shortening and redirection.
+// It uses the Mongoose library to interact with the database and defines routes for creating short URLs
