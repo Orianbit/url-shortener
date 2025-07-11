@@ -10,21 +10,37 @@ const port = process.env.PORT || 8001;
 
 app.use(express.json());
 
-app.use('/url', urlRoutes);
-
-app.get('/:shortUrl', async (req, res) => {
-  const shortUrl = req.params.shortUrl;
-  const entry = await URL.findOneAndUpdate(
-    { shortUrl },
-    { $push: { visitHistory: { timestamp: Date.now() } } }
-  );
-
-  if (!entry) return res.status(404).json({ error: "Short URL not found" });
-
-  res.redirect(entry.originalUrl);
+// ✅ Friendly message for homepage
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>🔗 URL Shortener API</h1>
+    <p>Use <code>POST /url</code> to create short URLs.</p>
+    <p>See <a href="https://github.com/Orianbit/url-shortener">GitHub Repo</a> for documentation.</p>
+  `);
 });
 
-// ✅ Use env var for connection string
+// ✅ Short URL redirection
+app.get('/:shortUrl', async (req, res) => {
+  try {
+    const shortUrl = req.params.shortUrl;
+    const entry = await URL.findOneAndUpdate(
+      { shortUrl },
+      { $push: { visitHistory: { timestamp: Date.now() } } }
+    );
+
+    if (!entry) return res.status(404).json({ error: "Short URL not found" });
+
+    res.redirect(entry.originalUrl);
+  } catch (error) {
+    console.error("Redirect error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// ✅ API routes
+app.use('/url', urlRoutes);
+
+// ✅ MongoDB connection and server start
 connectDB(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
@@ -35,5 +51,3 @@ connectDB(process.env.MONGO_URI)
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
-// This code sets up an Express server that connects to a MongoDB database and provides routes for URL shortening and redirection.
-// It uses the Mongoose library to interact with the database and defines routes for creating short URLs
