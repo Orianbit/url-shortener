@@ -10,9 +10,10 @@ A powerful, production-ready Node.js + MongoDB-based URL shortening service that
 
 ---
 
-## 🚀 Live Demo
+### ✅ Live Demo Now Shows API Info at Root
 
-[![Live](https://img.shields.io/badge/Live%20Demo-onrender-green?style=for-the-badge\&logo=render)](https://url-shortener-nm9j.onrender.com)
+Visit [https://url-shortener-nm9j.onrender.com](https://url-shortener-nm9j.onrender.com)  
+
 
 ---
 
