@@ -4,7 +4,7 @@ const urlRoutes = require('./route/url');   // Check if folder is route or route
 const URL = require('./model/url'); // Import the URL model
 
 const app = express();
-const port = 8001;
+const port = process.env.PORT || 8001;
 
 // ✅ Add JSON parser middleware
 app.use(express.json());
