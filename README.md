@@ -144,14 +144,10 @@ Limits requests to 100 per 15 minutes per IP using `express-rate-limit`.
 
 ## ✍️ Author
 
-* Astitva
+* [Astitva](https://github.com/Orianbit)
 
 ---
 
 ## 📂 License
 
-MIT
-
----
-
-> ✅ Ready to deploy. Let me know if you want to add Docker, Swagger docs, or host on Render!
+MIT 
