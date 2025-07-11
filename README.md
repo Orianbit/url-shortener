@@ -1,6 +1,18 @@
 # 🔗 URL Shortener API (Backend Developer Intern Task)
 
-A Node.js + MongoDB-based URL shortening service that allows users to create short URLs, track visits, and set expiration dates.
+A powerful and production-ready Node.js + MongoDB-based URL shortening service that allows users to:
+
+* 🔗 Create branded short URLs
+* ⏳ Set expiration dates
+* 📊 Track visit analytics
+
+> ⭐ Built as part of a Backend Developer Internship Task
+
+---
+
+## 🚀 Live Demo
+
+👉 [Live URL Shortener Demo](https://your-live-demo-link.com) *(Replace with deployed link or leave this section commented if not yet hosted)*
 
 ---
 
@@ -8,32 +20,34 @@ A Node.js + MongoDB-based URL shortening service that allows users to create sho
 
 ### Core Features
 
-* Shorten long URLs via `POST /url`
-* Redirect using short URL via `GET /url/:shortUrl`
-* Stores original URL, short ID, timestamp
-* Redirects with proper error handling
-* Validates input URL
+* 🔗 Shorten long URLs via `POST /url`
+* 🚀 Redirect using short URL via `GET /url/:shortUrl`
+* 🧠 Stores original URL, short ID, timestamps
+* 🛡 Validates input and handles invalid or missing URLs
+* ⚠️ Redirects with proper status codes (`302`, `404`, `410`)
 
-### Bonus Features
+### Bonus Features ✅
 
-* Expiration logic using optional `expiresAt` field
-* Analytics: view visit history and click counts
-* Rate limiting with `express-rate-limit`
+* ⏳ Expiration logic using optional `expiresAt` field
+* 📊 Visit analytics: track clicks & timestamps
+* 🧃 Rate limiting with `express-rate-limit` (100 requests / 15 min per IP)
 
 ---
 
 ## 📁 Folder Structure
 
 ```
-├── index.js
-├── connect.js
+├── index.js               # App entry point
+├── connect.js             # MongoDB connection setup
 ├── model/
-│   └── url.js
+│   └── url.js             # Mongoose schema
 ├── controller/
-│   └── url.js
+│   └── url.js             # Business logic
 ├── route/
-│   └── url.js
-├── package.json
+│   └── url.js             # Express routes
+├── .env.example           # Sample environment config
+├── .gitignore             # Git ignore rules
+├── package.json           # Project config & dependencies
 ```
 
 ---
@@ -43,38 +57,41 @@ A Node.js + MongoDB-based URL shortening service that allows users to create sho
 ### 1. Clone and Install
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/your-username/url-shortener.git
 cd url-shortener
 npm install
 ```
 
-### 2. MongoDB
+### 2. Configure Environment
 
-Make sure MongoDB is running locally:
+Create a `.env` file:
 
+```env
+MONGO_URI=mongodb://localhost:27017/url-shortener
+PORT=8001
 ```
-mongodb://localhost:27017/url-shortener
-```
 
-You can also connect with MongoDB Atlas if desired.
+### 3. Run MongoDB
 
-### 3. Start the Server
+Ensure MongoDB is running locally, or use MongoDB Atlas.
+
+### 4. Start the Server
 
 ```bash
 npm start
 ```
 
-Server will run at: `http://localhost:8001`
+Server will be running at: [http://localhost:8001](http://localhost:8001)
 
 ---
 
 ## 📬 API Endpoints
 
-### ➕ POST `/url`
+### ➕ `POST /url`
 
-Create a short URL
+Create a short URL.
 
-**Body:**
+**Request Body:**
 
 ```json
 {
@@ -91,22 +108,32 @@ Create a short URL
 }
 ```
 
-### 🔁 GET `/url/:shortUrl`
+---
 
-Redirect to original URL. Returns:
+### 🔁 `GET /url/:shortUrl`
 
-* `302` redirect if valid
+Redirect to the original URL.
+
+**Returns:**
+
+* `302` if valid
 * `410` if expired
 * `404` if not found
 
-### 📊 GET `/url/analytics/:shortUrl`
+---
 
-Returns usage analytics for a short URL:
+### 📊 `GET /url/analytics/:shortUrl`
+
+Get usage statistics for a short URL.
+
+**Response:**
 
 ```json
 {
   "totalClicks": 3,
-  "analytics": [{"timestamp": 1720700000000}],
+  "analytics": [
+    { "timestamp": 1720700000000 }
+  ],
   "createdAt": "...",
   "expiresAt": "...",
   "isExpired": true
@@ -117,7 +144,10 @@ Returns usage analytics for a short URL:
 
 ## 🔐 Rate Limiting
 
-Limits requests to 100 per 15 minutes per IP using `express-rate-limit`.
+Protects your API with:
+
+* ⏱ 100 requests per 15 minutes per IP
+* 🚫 Blocks abuse and keeps the app performant
 
 ---
 
@@ -128,26 +158,34 @@ Limits requests to 100 per 15 minutes per IP using `express-rate-limit`.
 | `400`       | Invalid request body  |
 | `404`       | Short URL not found   |
 | `410`       | URL has expired       |
-| `500`       | Server/internal error |
+| `500`       | Internal server error |
 
 ---
 
 ## 💡 Tech Stack
 
-* Node.js
-* Express
-* MongoDB + Mongoose
-* nanoid
-* express-rate-limit
+* ⚙️ Node.js
+* 🚀 Express.js
+* 🗃 MongoDB + Mongoose
+* 🔐 nanoid (unique ID generation)
+* 🧃 express-rate-limit
+
+---
+
+## 🤝 Acknowledgements
+
+* MongoDB documentation
+* Express.js official docs
 
 ---
 
 ## ✍️ Author
 
-* [Astitva](https://github.com/Orianbit)
+* [Astitva (Orianbit)](https://github.com/Orianbit)
 
 ---
 
 ## 📂 License
 
-MIT 
+[MIT](LICENSE)
+
